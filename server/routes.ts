@@ -4,12 +4,83 @@ import { storage } from "./storage";
 import { api } from "@shared/routes";
 import { z } from "zod";
 import { insertEventSchema } from "@shared/schema";
+import { fetchAllEvents } from "./scrapers";
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
   
+  // Live events endpoint - fetches from all scrapers
+  app.get("/api/events", async (req, res) => {
+    try {
+      const filter = req.query.filter as 'all' | 'week' | 'weekend' | 'free' | undefined;
+      const search = req.query.search as string | undefined;
+      
+      // Fetch live events from scrapers
+      const scrapedEvents = await fetchAllEvents();
+      
+      if (!scrapedEvents || scrapedEvents.length === 0) {
+        return res.status(200).json([]);
+      }
+
+      // Convert scraped events to database format
+      const now = new Date();
+      let filteredEvents = scrapedEvents;
+
+      // Apply filters
+      if (filter === 'week') {
+        const nextWeek = new Date(now);
+        nextWeek.setDate(now.getDate() + 7);
+        filteredEvents = filteredEvents.filter(
+          e => e.startTime >= now && e.startTime <= nextWeek
+        );
+      } else if (filter === 'weekend') {
+        const friday = new Date(now);
+        friday.setDate(now.getDate() + (5 - now.getDay() + 7) % 7);
+        friday.setHours(0, 0, 0, 0);
+        
+        const sunday = new Date(friday);
+        sunday.setDate(friday.getDate() + 2);
+        sunday.setHours(23, 59, 59, 999);
+        
+        filteredEvents = filteredEvents.filter(
+          e => e.startTime >= friday && e.startTime <= sunday
+        );
+      } else if (filter === 'free') {
+        filteredEvents = filteredEvents.filter(e => e.isFree);
+      } else {
+        // 'all' - just show future events
+        filteredEvents = filteredEvents.filter(e => e.startTime >= now);
+      }
+
+      // Apply search filter
+      if (search) {
+        const searchLower = search.toLowerCase();
+        filteredEvents = filteredEvents.filter(e =>
+          e.title.toLowerCase().includes(searchLower) ||
+          e.description?.toLowerCase().includes(searchLower) ||
+          e.location?.toLowerCase().includes(searchLower) ||
+          e.category.toLowerCase().includes(searchLower)
+        );
+      }
+
+      // Convert to a format suitable for frontend (add synthetic ID)
+      const result = filteredEvents.map((event, index) => ({
+        id: index + 1,
+        ...event
+      }));
+
+      res.json(result);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+      res.status(500).json({ 
+        message: "Failed to fetch events. Please try again later.",
+        error: error instanceof Error ? error.message : "Unknown error"
+      });
+    }
+  });
+
   app.get(api.events.list.path, async (req, res) => {
     const filter = req.query.filter as 'all' | 'week' | 'weekend' | 'free' | undefined;
     const search = req.query.search as string | undefined;

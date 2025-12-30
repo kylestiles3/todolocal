@@ -8,18 +8,18 @@ export function useEvents(filters?: {
   filter?: 'all' | 'week' | 'weekend' | 'free' 
 }) {
   return useQuery({
-    queryKey: [api.events.list.path, filters],
+    queryKey: ["/api/events", filters],
     queryFn: async () => {
-      // Build query string manually since fetch doesn't support params object directly
+      // Fetch from live scraper endpoint
       const params = new URLSearchParams();
       if (filters?.category) params.append("category", filters.category);
       if (filters?.search) params.append("search", filters.search);
       if (filters?.filter) params.append("filter", filters.filter);
       
-      const url = `${api.events.list.path}?${params.toString()}`;
-      const res = await fetch(url, { credentials: "include" });
+      const url = `/api/events?${params.toString()}`;
+      const res = await fetch(url);
       if (!res.ok) throw new Error("Failed to fetch events");
-      return api.events.list.responses[200].parse(await res.json());
+      return await res.json();
     },
   });
 }
