@@ -64,6 +64,19 @@ export default function Home() {
           </Tabs>
         </div>
 
+        {/* AdSense Banner Ad Placeholder */}
+        <div className="mb-12 flex justify-center">
+          <div className="w-full max-w-4xl bg-secondary/30 border border-border rounded-lg p-8 text-center text-muted-foreground">
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-xxxxxxxxxxxxxxxx"
+              crossOrigin="anonymous"></script>
+            <ins className="adsbygoogle" style={{ display: 'block' }} data-ad-client="ca-pub-xxxxxxxxxxxxxxxx"
+              data-ad-slot="0000000000" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+            <script>
+              {`(adsbygoogle = window.adsbygoogle || []).push({});`}
+            </script>
+          </div>
+        </div>
+
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
             <Loader2 className="w-10 h-10 animate-spin mb-4 text-primary" />
@@ -90,7 +103,20 @@ export default function Home() {
         )}
       </main>
       
-      <footer className="bg-foreground text-primary-foreground py-12 mt-20">
+      {/* AdSense Footer Ad Placeholder */}
+      <div className="bg-secondary/20 py-12 mt-20 mb-0 text-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-xxxxxxxxxxxxxxxx"
+            crossOrigin="anonymous"></script>
+          <ins className="adsbygoogle" style={{ display: 'block' }} data-ad-client="ca-pub-xxxxxxxxxxxxxxxx"
+            data-ad-slot="0000000001" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+          <script>
+            {`(adsbygoogle = window.adsbygoogle || []).push({});`}
+          </script>
+        </div>
+      </div>
+
+      <footer className="bg-foreground text-primary-foreground py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div>

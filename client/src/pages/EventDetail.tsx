@@ -88,6 +88,17 @@ export default function EventDetail() {
             </div>
             
             <div className="md:border-l border-border bg-secondary/30 p-6 sm:p-10 space-y-8">
+              {/* AdSense Sidebar Ad */}
+              <div className="bg-secondary/50 border border-border rounded-lg p-4 text-center text-muted-foreground text-sm">
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-xxxxxxxxxxxxxxxx"
+                  crossOrigin="anonymous"></script>
+                <ins className="adsbygoogle" style={{ display: 'block' }} data-ad-client="ca-pub-xxxxxxxxxxxxxxxx"
+                  data-ad-slot="0000000002" data-ad-format="vertical" data-full-width-responsive="true"></ins>
+                <script>
+                  {`(adsbygoogle = window.adsbygoogle || []).push({});`}
+                </script>
+              </div>
+
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
                   <div className="bg-white p-3 rounded-xl shadow-sm border border-border/50 text-primary">
