@@ -1,0 +1,93 @@
+This project must be optimized for immediate deployment on Vercel and future monetization (e.g., Google AdSense). Here are the requirements:
+
+1. Stack & Environment
+
+Use React + Vite for the front-end and Express + Node for the back-end API.
+
+Use TypeScript across all layers.
+
+Organize code so that Vercel can detect both the server (API) and client (React) correctly.
+
+Ensure static assets (images, favicon) are in a public folder that Vercel can serve directly.
+
+2. Directory Features
+
+Homepage listing events with tabs or filters: "This Week", "This Weekend", "Free Events".
+
+Event detail pages with description, date/time, location, and optional images.
+
+Clean, responsive UI with navigation component.
+
+Include placeholder ad slots for AdSense in the layout.
+
+Ability to add more events dynamically via API or local JSON/DB.
+
+3. Full-Stack Separation
+
+/client/src → React app
+
+/server → Express API with routes for fetching events
+
+/shared → Common schemas/types/interfaces for events
+
+/public → Static assets (favicon, images, etc.)
+
+Keep build outputs and configuration clean so Vercel can deploy without errors.
+
+4. Data & State Management
+
+Use React Query or similar for fetching events from API.
+
+Include hooks for common functionality like fetching events and handling loading/errors.
+
+5. Deployment Optimizations
+
+Ensure Vercel can detect client build (vite build) and server API (server/index.ts) automatically.
+
+Include vercel.json for build settings if needed.
+
+Ensure public path for static assets works correctly.
+
+6. Code Quality & Structure
+
+Use TypeScript and interfaces for all event objects.
+
+Cleanly separate components (UI, navigation, cards, layout).
+
+Avoid legacy or duplicated code.
+
+Ensure all imports use proper paths for Replit and Vercel.
+
+7. Bonus Features (if simple enough)
+
+SEO meta tags for each page
+
+Mobile-friendly layout
+
+Optional: “Add Event” form (can be local JSON only for MVP)
+
+Optional: placeholder for user accounts or admin in future
+
+Final Deliverables
+
+Fully working Replit project with the above structure.
+
+Should run on Replit preview exactly like it would on Vercel.
+
+Everything up-to-date for 12/30/25 standards, TypeScript 5+, React 18+, Vite latest.
+
+Clean separation of client/server/shared/public for maintainability and future feature expansion.
+
+Important Notes for Vercel
+
+Server API Detection: Ensure the server/index.ts (or server.ts) is listed as the server entry point. Vercel will auto-detect if under /api or /server.
+
+Client Build Output: vite build should output to dist/public or whatever is set in vite.config.ts, and vercel.json should point to it.
+
+Static Assets: Everything in /public is automatically served.
+
+AdSense: Insert <script> or <ins> placeholders in App.tsx or a layout component for easy monetization.
+
+If you like, the next step is to execute this prompt in Replit, so we can generate a fully clean, deployable, AdSense-ready directory website, then I can walk you through pushing it to GitHub and connecting to Vercel without the weird download issues.
+
+Do you want me to prepare the exact Replit-ready version of this prompt next so you can copy-paste it?
