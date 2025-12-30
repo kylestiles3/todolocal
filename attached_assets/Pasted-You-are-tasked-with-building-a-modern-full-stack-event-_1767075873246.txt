@@ -1,0 +1,71 @@
+You are tasked with building a modern, full-stack event directory web app for Lexington, KY. The app must be production-ready, fully typed with TypeScript, AdSense-ready, and optimized for Vercel deployment. Follow these requirements carefully:
+
+1. **Backend / Scrapers**
+   - Create a `server/scrapers.ts` file that scrapes or fetches events from **10+ sources**: yard sales, HOA/community events, churches, food trucks, parks, farmers markets, volunteer opportunities, festivals, classes/workshops, museums, and zoo events. Include any public APIs if available.
+   - Each source must have its own `fetchEvents` function returning an array of objects matching this interface:
+     ```ts
+     export interface EventItem {
+       id: string;
+       title: string;
+       description?: string;
+       date: string; // ISO format
+       time?: string;
+       location?: string;
+       imageUrl?: string;
+       sourceUrl: string;
+       category: string;
+     }
+     ```
+   - Implement **error handling** (so one broken source doesn’t crash the app) and **rate limiting**.
+   - Aggregate all events into a single array.
+
+2. **API**
+   - Create a `/server/routes.ts` or `/server/index.ts` endpoint `/api/events` that returns all events from the scrapers in JSON format.
+   - Support future database integration for caching.
+
+3. **Frontend**
+   - In `client/src`, create a `useEvents.ts` hook to fetch `/api/events`.
+   - Create `EventList.tsx` and `EventCard.tsx` components to display the events.
+   - Add filtering tabs: “This Week”, “This Weekend”, “Free Events”.
+   - Each event links to an `EventDetail.tsx` page with full info and optional image.
+   - Integrate **AdSense slots** in the layout (home page and event detail).
+
+4. **Vercel & Build**
+   - Ensure React + Vite build outputs static files to `/public`.
+   - API endpoints must be serverless-compatible for Vercel.
+   - Add proper routing for `/events/:id`.
+
+5. **Project Structure**
+client/
+src/
+pages/
+Home.tsx
+EventDetail.tsx
+components/
+EventCard.tsx
+EventList.tsx
+hooks/
+useEvents.ts
+lib/
+apiClient.ts
+server/
+scrapers.ts
+routes.ts
+db.ts (optional for future caching)
+public/
+favicon.png
+index.html
+
+markdown
+Copy code
+6. **Testing**
+- Test each scraper independently.
+- Ensure API returns JSON correctly.
+- Verify frontend fetches and renders events.
+
+7. **Optimization**
+- Minimize API calls; cache results if possible.
+- Full TypeScript typing.
+- Fast page load and SEO-friendly.
+
+**Goal:** A fully working event directory for Lexington that can fetch real events, display them cleanly, monetize via AdSense, and deploy to Vercel without errors.
