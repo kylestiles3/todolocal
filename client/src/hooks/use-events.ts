@@ -28,13 +28,13 @@ export function useEvents(filters?: {
 
 export function useEvent(id: number) {
   return useQuery({
-    queryKey: [api.events.get.path, id],
+    queryKey: ["/api/events", id],
     queryFn: async () => {
-      const url = buildUrl(api.events.get.path, { id });
+      const url = `/api/events/${id}`;
       const res = await fetch(url, { credentials: "include" });
       if (res.status === 404) return null;
       if (!res.ok) throw new Error("Failed to fetch event");
-      return api.events.get.responses[200].parse(await res.json());
+      return await res.json();
     },
   });
 }

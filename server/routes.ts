@@ -106,11 +106,34 @@ export async function registerRoutes(
   });
 
   app.get(api.events.get.path, async (req, res) => {
-    const event = await storage.getEvent(Number(req.params.id));
-    if (!event) {
-      return res.status(404).json({ message: 'Event not found' });
+    try {
+      const eventId = Number(req.params.id);
+      
+      // Fetch all scraped events
+      const scrapedEvents = await fetchAllEvents();
+      const now = new Date();
+      
+      // Filter future events only
+      let filteredEvents = scrapedEvents.filter(e => e.startTime >= now);
+      filteredEvents.sort((a, b) => a.startTime.getTime() - b.startTime.getTime());
+      
+      // Find event by ID (ID is 1-based index)
+      if (eventId <= 0 || eventId > filteredEvents.length) {
+        return res.status(404).json({ message: 'Event not found' });
+      }
+      
+      const event = filteredEvents[eventId - 1];
+      res.json({
+        id: eventId,
+        ...event
+      });
+    } catch (error) {
+      console.error("Error fetching event:", error);
+      res.status(500).json({ 
+        message: "Failed to fetch event. Please try again later.",
+        error: error instanceof Error ? error.message : "Unknown error"
+      });
     }
-    res.json(event);
   });
 
   app.post(api.events.create.path, async (req, res) => {
