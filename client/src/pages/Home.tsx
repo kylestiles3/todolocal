@@ -79,6 +79,25 @@ export default function Home() {
       document.head.appendChild(scriptTag);
     }
     scriptTag.textContent = JSON.stringify(eventSchema);
+      // Load Google AdSense script safely (only once)
+  if (!document.querySelector('script[src*="adsbygoogle.js"]')) {
+    const script = document.createElement("script");
+    script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-xxxxxxxxxxxxxxxx";
+    script.async = true;
+    script.crossOrigin = "anonymous";
+    document.head.appendChild(script);
+  }
+
+  // Trigger ads render
+  setTimeout(() => {
+    try {
+      // @ts-ignore
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {
+      console.warn("Adsense not ready yet");
+    }
+  }, 500);
+
   }, [events]);
 
   return (
@@ -136,13 +155,10 @@ export default function Home() {
         {/* AdSense Banner Ad Placeholder */}
         <div className="mb-12 flex justify-center">
           <div className="w-full max-w-4xl bg-secondary/30 border border-border rounded-lg p-8 text-center text-muted-foreground">
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-xxxxxxxxxxxxxxxx"
-              crossOrigin="anonymous"></script>
+           
             <ins className="adsbygoogle" style={{ display: 'block' }} data-ad-client="ca-pub-xxxxxxxxxxxxxxxx"
               data-ad-slot="0000000000" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
-            <script>
-              {`(adsbygoogle = window.adsbygoogle || []).push({});`}
-            </script>
+          
           </div>
         </div>
 
@@ -175,13 +191,10 @@ export default function Home() {
       {/* AdSense Footer Ad Placeholder */}
       <div className="bg-secondary/20 py-12 mt-20 mb-0 text-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-xxxxxxxxxxxxxxxx"
-            crossOrigin="anonymous"></script>
+          
           <ins className="adsbygoogle" style={{ display: 'block' }} data-ad-client="ca-pub-xxxxxxxxxxxxxxxx"
             data-ad-slot="0000000001" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
-          <script>
-            {`(adsbygoogle = window.adsbygoogle || []).push({});`}
-          </script>
+          
         </div>
       </div>
 
