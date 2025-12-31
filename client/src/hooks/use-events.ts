@@ -2,6 +2,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api, buildUrl } from "@shared/routes";
 import type { InsertEvent } from "@shared/schema";
 
+const API_BASE = import.meta.env.VITE_API_URL || ""; // Use full backend URL if set
+
 export function useEvents(filters?: { 
   category?: string; 
   search?: string; 
@@ -10,17 +12,15 @@ export function useEvents(filters?: {
   return useQuery({
     queryKey: ["/api/events", filters],
     queryFn: async () => {
-      // Fetch from live scraper endpoint
       const params = new URLSearchParams();
       if (filters?.category) params.append("category", filters.category);
       if (filters?.search) params.append("search", filters.search);
       if (filters?.filter) params.append("filter", filters.filter);
-      
-      const url = `/api/events?${params.toString()}`;
+
+      const url = `${API_BASE}/api/events?${params.toString()}`;
       const res = await fetch(url);
       if (!res.ok) throw new Error("Failed to fetch events");
       const data = await res.json();
-      // Support both old format (array) and new format (object with events array)
       return Array.isArray(data) ? data : data.events || [];
     },
   });
@@ -30,7 +30,7 @@ export function useEvent(id: number) {
   return useQuery({
     queryKey: ["/api/events", id],
     queryFn: async () => {
-      const url = `/api/events/${id}`;
+      const url = `${API_BASE}/api/events/${id}`;
       const res = await fetch(url, { credentials: "include" });
       if (res.status === 404) return null;
       if (!res.ok) throw new Error("Failed to fetch event");
@@ -43,7 +43,7 @@ export function useCreateEvent() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (data: InsertEvent) => {
-      const res = await fetch(api.events.create.path, {
+      const res = await fetch(`${API_BASE}${api.events.create.path}`, {
         method: api.events.create.method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -63,3 +63,4 @@ export function useCreateEvent() {
     },
   });
 }
+
